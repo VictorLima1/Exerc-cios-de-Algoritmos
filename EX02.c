@@ -2,81 +2,80 @@
 #include <stdlib.h>
 
 typedef struct{
-	int v[100];
-	int n;
-	int max;
-}VetorEstatico;
+	int a;
+	int b;
+}XPTO;
 
-VetorEstatico criaVetor(){
-	VetorEstatico ve;
-	ve.n = 0;
-	ve.max = 100;
-	return ve;
-}
-
-void insereDados(VetorEstatico *ve){
-	ve->n = (ve->n + 1);
-	int i = ve->n - 1;
-	//printf("%d", ve->n);
-	printf("Insira um valor: ");
-	scanf("%d", ve->v+i);
-}
-
-void procuraNum(VetorEstatico *ve, int num){
+void criaVetor(XPTO* v, int n){
 	int i;
-	for(i = 0; i < ve->n; i++){
-		if(num == ve->v[i]){
-			printf("Encontrado: %d\n", ve->v[i]);
-			return;
-		}		
-	}
-	printf("Valor não encontrado");
-}
-
-void deletaItem(VetorEstatico *ve, int num){
-	int i;
-	for(i = 0; i < ve->n; i++){
-		if(num == ve->v[i]){
-			ve->v[i] = 0;
-			return;
-		}		
-	}
-	printf("Nenhum resultado");
-}
-
-void imprimeVetor(VetorEstatico *ve){
-	int i;
-	printf("\n\n\nImprimindo o vetor:\n");
-	for(i = 0; i < ve->n; i++){
-		printf("%d\n", ve->v[i]);
+	for(i = 0; i < n; i++){
+		v[i].a = i%3;
+		v[i].b = 100 - i%5;
 	}
 }
 
-int main(){
-	int i = 1;
-	int opc;
-	VetorEstatico ve = criaVetor();
-	while(i!=0){
-		printf("\n\n\nO que deseja?\n1 - Inserir\n2 - Procurar\n3 - Deletar\n4 - Imprimir\n\n\n");
-		scanf("%d", &opc);
-		if(opc == 1)
-			insereDados(&ve);
-		else if (opc == 2){
-			int x;
-			printf("Qual valor deseja procurar? ");
-			scanf("%d", &x);
-			procuraNum(&ve, x);
+void imprimeVetor(XPTO* v, int n){
+	int i;
+	for(i = 0; i < n; i++){
+		printf("a = %d, b = %d\n", v[i].a, v[i].b);
+	}
+}
+
+int porA(void* p1, void* p2){
+	XPTO* pp1 = p1;
+	XPTO* pp2 = p2;
+	return pp1->a < pp2->a;
+}
+
+int porB(void* p1, void* p2){
+	XPTO* pp1 = p1;
+	XPTO* pp2 = p2;
+	return pp1->b < pp2->b;
+}
+
+void merge(XPTO *v, int i, int m, int f){
+
+	int a = i;
+	int b = m;
+	int k = 0;
+	
+	int *v2 = malloc(sizeof(int)* (f-i+1) );
+
+	while( a < m && b <= f){
+		if( v[a] < v[b]){
+			v2[k] = v[a];
+			a++;
+		}else{
+			v2[k] = v[b];
+			b++;
 		}
-		else if(opc == 3){
-			int x;
-			printf("Qual valor deseja deletar? ");
-			scanf("%d", &x);
-			deletaItem(&ve, x);
-		}
-		else if(opc == 4)
-			imprimeVetor(&ve);
-		else
-			printf("Escolha apenas algum valor mostrado");
-			
+		k++;
 	}
+	
+	while( a < m ){
+		v2[k] = v[a];
+		a++;
+		k++;
+	}
+	while( b <= f ){
+		v2[k] = v[b];
+		b++;
+		k++;
+	}
+
+	copiaVetor(v+i, v2, f-i+1);
+	
+	free(v2);
+
+}
+
+int main(int argc, char* argv[]){
+	XPTO v[10];
+	criaVetor(v, 10);
+	
+	merge(&v, sizeof(XPTO), 10, porA);
+
+	imprimeVetor(v, 10);
+
+	return 0;
 }
