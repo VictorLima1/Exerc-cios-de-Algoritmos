@@ -12,14 +12,19 @@ typedef struct{
 }Aluno;
 
 Aluno* leArquivo(Aluno *a, int n) {
-  	FILE* f = fopen("registros.txt","r");
-	int i;
-  	for (i = 0; i < n; i++) {
-  		fscanf(f,"%s", (a[i].nome));
-    		fscanf(f,"%s", (a[i].telefone));
-    		fscanf(f,"%s", (a[i].email));
-  	}
-  	fclose(f);
+  FILE* f = fopen("registros.txt","r");
+  int i;
+  for (i = 0; i < n; i++) {
+  	fscanf(f,"%s", (a[i].registro));
+  	fscanf(f,"%s", (a[i].nome));
+  	fscanf(f,"%s", (a[i].email));
+  	fscanf(f,"%s", (a[i].telefone));
+  	fscanf(f,"%i", (a[i].p1));
+  	fscanf(f,"%i", (a[i].p2));
+  	fscanf(f,"%i", (a[i].p3));
+  	fscanf(f,"%i", (a[i].media));
+  }
+  fclose(f);
 }
 
 int contaLinhas(char* a){
@@ -28,27 +33,47 @@ int contaLinhas(char* a){
 	int i=0;
 
 	while(fgets(str, 10000, f) != NULL){
-    		i++;
-  	}
+  	i++;
+  }
 
-  	fclose(f);
+  fclose(f);
 	return i;
 }
 
 void insereAluno(){
 	Aluno a;
-	printf("Nome do aluno: ");
+	fflush(stdin);
+	printf("Registro do aluno: ");
+	fflush(stdin);
+	scanf("%s", a.registro);
+	fflush(stdin);
+	printf("\nNome do aluno: ");
 	fflush(stdin);
 	scanf("%s", a.nome);
-	puts("Registro do aluno: ");
 	fflush(stdin);
-	scanf("%i", a.registro);
-	puts("E-mail do aluno: ");
+	printf("\nE-mail do aluno: ");
 	fflush(stdin);
 	scanf("%s", a.email);
-	
+	fflush(stdin);
+	printf("\nTelefone do aluno: ");
+	fflush(stdin);
+	scanf("%s", a.telefone);
+	fflush(stdin);
+	printf("\nNota da P1: ");
+	fflush(stdin);
+	scanf("%i", &a.p1);
+	fflush(stdin);
+	printf("\nNota da P2: ");
+	fflush(stdin);
+	scanf("%i", &a.p2);
+	fflush(stdin);
+	printf("\nNota da P3: ");
+	fflush(stdin);
+	scanf("%i", &a.p3);
+
+	a.media = (a.p1 + a.p2 + a.p3)/3;
 	FILE* f = fopen("registros.txt", "a");
-	fprintf(f, "%s %i %s\n", a.nome, a.registro, a.email);
+	fprintf(f, "%s %s %s %s %i %i %i %i\n", a.registro, a.nome, a.email, a.telefone, a.p1, a.p2, a.p3, a.media);
 	fclose(f);
 }
 
@@ -59,7 +84,7 @@ void mostraAluno(Aluno *a, int n){
 
 		}
 		else{
-			printf("Nome: %s\nRegistro: %s\nE-mail: %s\n", a[i].nome, a[i].registro, a[i].email);
+			printf("Registro: %s\nNome: %s\nE-mail: %s\nTelefone: %s\nP1: %i\nP2: %i\nP3: %i\nMédia: %i\n\n", a[i].registro, a[i].nome, a[i].email, a[i].telefone, a[i].p1, a[i].p2, a[i].p3, a[i].media);
 		}
   	}
 	puts("");
@@ -79,7 +104,7 @@ void deletaAluno(Aluno *a, int n){
 		scanf("%s", nome);
 		for (i = 0; i < n; i++){
 			if(strcmp(nome, a[i].nome) != 0){
-				fprintf(f, "%s %s %s\n", a[i].nome, a[i].registro, a[i].email);
+				fprintf(f, "%s %s %s %s %i %i %i %i\n", a[i].registro, a[i].nome, a[i].email, a[i].telefone, a[i].p1, a[i].p2, a[i].p3, a[i].media);
 			}
 		}
 		system("clear");
@@ -92,7 +117,7 @@ void deletaAluno(Aluno *a, int n){
 int main(){
 	int opc = 1, opc2;
 
-	
+
 
 	while(opc == 1){
 		printf("1 - Inserir aluno\n2 - Mostrar todos\n3 - Alterar dados\n4 - Deletar aluno\n0 - Sair\n");
@@ -117,7 +142,7 @@ int main(){
 			free(a);
 		}
 	}
-	
-	
+
+
 	return 0;
 }
