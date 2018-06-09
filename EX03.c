@@ -34,14 +34,23 @@ void procuraNum(VetorEstatico *ve, int num){
 }
 
 void deletaItem(VetorEstatico *ve, int num){
-	int i;
-	for(i = 0; i < ve->n; i++){
+	int i, aux, del = 0;
+	for(i = 0; i <= ve->n; i++){
 		if(num == ve->v[i]){
-			ve->v[i] = 0;
-			return;
+			aux = ve->v[i+2];
+			ve->v[i] = ve->v[i+1];
+			ve->v[i+1] = aux;
+			del = 1;
 		}		
 	}
-	printf("Nenhum resultado");
+	
+	if (del == 1){
+		ve->n = ve->n - 1;
+	}
+	else{
+		printf("Valor inexistente");
+	}
+	
 }
 
 void imprimeVetor(VetorEstatico *ve){
