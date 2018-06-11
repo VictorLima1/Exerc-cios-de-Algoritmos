@@ -54,13 +54,13 @@ void deletaElemento(VetorDinamico *ve){
 			ve->v[i+1] = aux;
 			del = 1;
 			ve->n = ve->n - 1;
-		}		
+		}
 	}
-	
+
 	if (del == 0){
 		printf("Valor inexistente");
 	}
-	
+
 }
 
 void imprimeVetor(VetorDinamico *ve){
@@ -73,32 +73,33 @@ void imprimeVetor(VetorDinamico *ve){
 void copiaVetores(VetorDinamico *ve, VetorDinamico *va){
 	int i;
 	if(ve->n < va->n){
-		printf("\nO segundo vetor tem mais valores que o primeiro. Copiando apenas o que for possivel.\n");
+		printf("\n\nO segundo vetor tem mais valores que o primeiro. Copiando apenas o que for possivel.\n");
+		for(i = 0; i < ve->n; i++){
+			ve->v[i] = va->v[i];
+		}
 	}
 
 	if(ve->n > va->n){
-		printf("\nO primeiro vetor tem mais valores. Os valores restantes serao zerados.\n");
+		printf("\n\nO primeiro vetor tem mais valores. Os valores restantes permanecerao inalterados.\n");
+		for(i = 0; i < va->n; i++){
+			ve->v[i] = va->v[i];
+		}
 	}
 
-	for(i = 0; i < ve->n; i++){
-		ve->v[i] = va->v[i];
-	}
+
 
 }
 
-/*void inverteVetor(VetorDinamico *ve){
-	int x = ve->n, i;
-	VetorDinamico reserva;
+void inverteVetor(VetorDinamico *ve){
+	int x, i;
+	int aux;
 
-	for(i = 0; i < ve->n; i++){
-		reserva.v[i] = ve->v[i];
+	for(i = 0; i < ve->n/2; i++){
+		x = ve->v[i];
+		ve->v[i] = ve->v[ve->n - 1 - i];
+		ve->v[ve->n - 1 - i] = x;
 	}
-
-	for (i = 0; i < ve->n; i++){
-		ve->v[i] = reserva.v[i+x];
-		x--;
-	}
-}*/
+}
 
 int main(){
 	int x;
@@ -129,6 +130,8 @@ int main(){
 		buscaElemento(&d);
 	else if(x == 2)
 		buscaElemento(&c);
+	else
+		printf("\n\nVetor inexistente, pulando para deletar um valor.\n\n");
 
 	printf("\n\nEm qual vetor deseja deletar um elemento? Digite 1 ou 2: ");
 	scanf("%d", &x);
@@ -136,6 +139,9 @@ int main(){
 		deletaElemento(&d);
 	else if(x == 2)
 		deletaElemento(&c);
+	else
+		printf("\n\nVetor inexistente, pulando para a copia dos vetores.");
+
 
 	printf("\nPrimeiro vetor: ");
 	imprimeVetor(&d);
@@ -154,5 +160,10 @@ int main(){
 	printf("\nPrimeiro vetor: ");
 	imprimeVetor(&d);
 
+
+	printf("\n\nInvertendo o segundo vetor:");
+	inverteVetor(&c);
+	printf("\nSegundo vetor: ");
+	imprimeVetor(&c);
 	return 0;
 }
