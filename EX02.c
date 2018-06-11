@@ -17,9 +17,8 @@ void criaVetor(XPTO *v, int n){
 
 void imprimeVetor(XPTO *v, int n){
 	int i;
-
 	for(i=0;i<n;i++){
-		printf("a = %d, b = %d\n", v[i].a, v[i].b);
+		printf("a=%d_b=%d\n", v[i].a, v[i].b);
 	}
 }
 
@@ -43,27 +42,25 @@ void troca(void *a, void *b, size_t tam){
 	free(aux);
 }
 
-void ordena(void *v, size_t t, int n, int (*porA)(void *a, void *b)){
+void ordena(void *v,size_t tam, int n, int (*porA)(void *a, void *b)){
 	int i,j;
-	for(i = 0;i < n-1;i++){
-		for(j = 0;j < n-1;j++){
-			if(porA(v + j*, v + (j+1)*t) == 1){
-				troca(v+ j*t, v + (j+1)*t, t);
-			}
+	for(i=0;i<n-1;i++){
+		for(j=0;j<n-1;j++){
+			if(porA(v + j*tam, v +(j+1)*tam)==1){
+				troca(v+ j*tam, v+(j+1)*tam, tam);
 		}
 	}
 }
+}
+
+
 
 int main(int argc, char*argv[]){
 	XPTO v[10];
 	criaVetor(v, 10);
-	// Ordenando por A
-	ordena(v, sizeof(XPTO), 10, porA);
-	imprimeVetor(v, 10);
+	ordena(v,sizeof(XPTO), 10, porA); //chamada da sua função, a ordenação será feita por A
 
-	// Ordenando por B
-	ordena(v, sizeof(XPTO), 10, porB);
-	imprimeVetor(v, 10);
+	imprimeVetor(v,10);
 
 	return 0;
 }
